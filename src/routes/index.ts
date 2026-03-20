@@ -3,6 +3,7 @@ import { healthRouter } from "./health.js";
 import { passwordRouter } from "../strategies/username-password/router.js";
 import { apiKeyRouter } from "../strategies/api-key/router.js";
 import { sessionRouter } from "../strategies/session-cookie/router.js";
+import { googleOAuthRouter } from "../strategies/oauth2-google/router.js";
 
 export const rootRouter = Router();
 
@@ -22,7 +23,7 @@ rootRouter.use("/auth/session", sessionRouter);
 // rootRouter.use("/auth/token", tokenRouter);
 
 // TODO(oauth2-google): Mount Google OAuth 2.0 router
-// rootRouter.use("/auth/oauth/google", googleOAuthRouter);
+rootRouter.use("/auth/oauth/google", googleOAuthRouter);
 
 // TODO(oauth2-github): Mount GitHub OAuth 2.0 router
 // rootRouter.use("/auth/oauth/github", githubOAuthRouter);

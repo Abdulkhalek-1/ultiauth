@@ -26,6 +26,9 @@ export async function login(
     throw ApiError.unauthorized("Account is deactivated");
   }
 
+  if (!user.passwordHash) {
+    throw ApiError.unauthorized("This account uses OAuth login");
+  }
   const isValid = await argon2.verify(user.passwordHash, input.password);
   if (!isValid) {
     throw ApiError.unauthorized("Invalid credentials");

@@ -12,6 +12,9 @@ const envSchema = z.object({
   JWT_REFRESH_EXPIRY: z.string().default("7d"),
   SESSION_SECRET: z.string().min(32).default("change-me-in-production-use-at-least-32-characters-here"),
   SESSION_MAX_AGE_HOURS: z.coerce.number().default(24),
+  GOOGLE_OAUTH_CLIENT_ID: z.string(),
+  GOOGLE_OAUTH_CLIENT_SECRET: z.string(),
+  GOOGLE_OAUTH_REDIRECT_URL: z.string()
 });
 
 export type Env = z.infer<typeof envSchema>;

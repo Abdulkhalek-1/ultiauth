@@ -2,7 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import session from "express-session";
-import { RedisStore } from "connect-redis";
+import RedisStore from "connect-redis";
 import { redis } from "./redis/index.js";
 import { env } from "./config/env.js";
 import { rootRouter } from "./routes/index.js";
