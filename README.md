@@ -8,7 +8,7 @@ A comprehensive authentication learning backend implementing every major auth st
 |---|----------|--------|------------|
 | 1 | Username/Password + JWT | Implemented | Beginner |
 | 2 | JWT Refresh Token Rotation | Planned | Beginner+ |
-| 3 | Session-based Auth (Redis) | Planned | Beginner |
+| 3 | Session-based Auth (Redis) | Implemented | Beginner |
 | 4 | OAuth 2.0 (Google) | Planned | Intermediate |
 | 5 | OAuth 2.0 (GitHub) | Planned | Intermediate |
 | 6 | SAML 2.0 SSO | Planned | Advanced |
@@ -16,7 +16,7 @@ A comprehensive authentication learning backend implementing every major auth st
 | 8 | Passkeys / WebAuthn | Planned | Advanced |
 | 9 | Magic Link (Passwordless) | Planned | Intermediate |
 | 10 | TOTP / MFA | Planned | Intermediate |
-| 11 | API Key Auth | Planned | Beginner |
+| 11 | API Key Auth | Implemented | Beginner |
 | 12 | Mutual TLS (mTLS) | Planned | Advanced |
 | 13 | RBAC & ABAC | Planned | Intermediate |
 
@@ -35,8 +35,8 @@ src/
 ├── middleware/                  # Auth, validation, rate limiting
 ├── strategies/                 # One folder per auth method
 │   ├── username-password/      # ✅ Implemented
-│   ├── api-key/                # 📋 TODO stub
-│   ├── session-cookie/         # 📋 TODO stub
+│   ├── api-key/                # ✅ Implemented
+│   ├── session-cookie/         # ✅ Implemented
 │   ├── oauth2-google/          # 📋 TODO stub
 │   ├── oauth2-github/          # 📋 TODO stub
 │   ├── saml/                   # 📋 TODO stub
@@ -127,6 +127,54 @@ curl -X POST http://localhost:3000/auth/password/register \
 curl -X POST http://localhost:3000/auth/password/login \
   -H "Content-Type: application/json" \
   -d '{"login": "demo", "password": "SecurePass123"}'
+```
+
+## API Endpoints (API Key Auth)
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| POST | `/auth/api-key/generate` | Bearer | Generate a new API key |
+| GET | `/auth/api-key/list` | Bearer | List all your API keys |
+| DELETE | `/auth/api-key/:keyId` | Bearer | Revoke an API key |
+| GET | `/auth/api-key/verify` | X-API-Key | Verify an API key works |
+
+### Generate Key
+
+```bash
+curl -X POST http://localhost:3000/auth/api-key/generate \
+  -H "Authorization: Bearer <access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "my-service", "scopes": ["read", "write"]}'
+```
+
+### Verify Key
+
+```bash
+curl http://localhost:3000/auth/api-key/verify \
+  -H "X-API-Key: ultiauth_<prefix>_<key>"
+```
+
+## API Endpoints (Session Auth)
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| POST | `/auth/session/login` | None | Login (sets session cookie) |
+| POST | `/auth/session/logout` | Cookie | Logout (destroys session) |
+| GET | `/auth/session/me` | Cookie | Get current user |
+
+### Session Login
+
+```bash
+curl -X POST http://localhost:3000/auth/session/login \
+  -H "Content-Type: application/json" \
+  -c cookies.txt \
+  -d '{"login": "demo", "password": "SecurePass123"}'
+```
+
+### Session Me
+
+```bash
+curl http://localhost:3000/auth/session/me -b cookies.txt
 ```
 
 ## Scripts

@@ -4,6 +4,10 @@ declare global {
   namespace Express {
     interface Request {
       user?: AuthUser;
+      apiKey?: {
+        userId: string;
+        scopes: string[];
+      };
     }
   }
 }

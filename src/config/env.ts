@@ -10,6 +10,8 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(32),
   JWT_ACCESS_EXPIRY: z.string().default("15m"),
   JWT_REFRESH_EXPIRY: z.string().default("7d"),
+  SESSION_SECRET: z.string().min(32).default("change-me-in-production-use-at-least-32-characters-here"),
+  SESSION_MAX_AGE_HOURS: z.coerce.number().default(24),
 });
 
 export type Env = z.infer<typeof envSchema>;

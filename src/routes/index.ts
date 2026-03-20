@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { healthRouter } from "./health.js";
 import { passwordRouter } from "../strategies/username-password/router.js";
+import { apiKeyRouter } from "../strategies/api-key/router.js";
+import { sessionRouter } from "../strategies/session-cookie/router.js";
 
 export const rootRouter = Router();
 
@@ -10,11 +12,14 @@ rootRouter.use("/health", healthRouter);
 // Strategy 1: Username/Password + JWT (implemented)
 rootRouter.use("/auth/password", passwordRouter);
 
+// Strategy 2: API Key Auth (implemented)
+rootRouter.use("/auth/api-key", apiKeyRouter);
+
+// Strategy 3: Session-based Auth (implemented)
+rootRouter.use("/auth/session", sessionRouter);
+
 // TODO(jwt-refresh): Mount JWT refresh token rotation router (enhanced standalone)
 // rootRouter.use("/auth/token", tokenRouter);
-
-// TODO(session-cookie): Mount session-based auth router
-// rootRouter.use("/auth/session", sessionRouter);
 
 // TODO(oauth2-google): Mount Google OAuth 2.0 router
 // rootRouter.use("/auth/oauth/google", googleOAuthRouter);
@@ -36,9 +41,6 @@ rootRouter.use("/auth/password", passwordRouter);
 
 // TODO(totp-mfa): Mount TOTP/MFA router
 // rootRouter.use("/auth/mfa", mfaRouter);
-
-// TODO(api-key): Mount API Key auth router
-// rootRouter.use("/auth/api-key", apiKeyRouter);
 
 // TODO(mutual-tls): Mount mTLS router
 // rootRouter.use("/auth/mtls", mtlsRouter);

@@ -25,9 +25,9 @@ Every major authentication method, implemented and explained in a single TypeScr
 ---
 
 ### 3. Session-based Auth (express-session + Redis)
-- [ ] **Status:** Planned
+- [x] **Status:** Implemented
 - **Difficulty:** Beginner
-- **Description:** Traditional stateful sessions with httpOnly cookies and Redis session store. Demonstrates the stateful vs. stateless auth trade-off and CSRF protection.
+- **Description:** Traditional stateful sessions with httpOnly cookies and Redis session store. Demonstrates the stateful vs. stateless auth trade-off. Includes session regeneration to prevent fixation attacks.
 - **Endpoints:** `POST /auth/session/login`, `/logout`, `GET /me`
 - **Packages:** `express-session`, `connect-redis`
 - **DB Changes:** None (sessions in Redis)
@@ -105,10 +105,10 @@ Every major authentication method, implemented and explained in a single TypeScr
 ---
 
 ### 11. API Key Auth
-- [ ] **Status:** Planned
+- [x] **Status:** Implemented
 - **Difficulty:** Beginner
-- **Description:** Simple key-based authentication for machine-to-machine communication. Covers key generation, hashing, prefix display, scoped permissions, and rotation.
-- **Endpoints:** `POST /auth/api-key/generate`, `DELETE /:keyId`, `GET /list`
+- **Description:** Key-based authentication for machine-to-machine communication. Covers key generation with `ultiauth_` prefix, SHA-256 hashing, scoped permissions, optional expiry, revocation, and last-used tracking. Includes `X-API-Key` header middleware.
+- **Endpoints:** `POST /auth/api-key/generate`, `DELETE /:keyId`, `GET /list`, `GET /verify`
 - **Packages:** None
 - **DB Changes:** New `api_keys` table
 
@@ -137,8 +137,8 @@ Every major authentication method, implemented and explained in a single TypeScr
 ## Recommended Implementation Order
 
 1. ~~Username/Password + JWT~~ (done)
-2. API Key Auth (simplest next step)
-3. Session-based Auth (introduces stateful auth)
+2. ~~API Key Auth~~ (done)
+3. ~~Session-based Auth~~ (done)
 4. TOTP/MFA (builds on password auth)
 5. Magic Link (introduces email flow)
 6. OAuth 2.0 Google (introduces external providers)
